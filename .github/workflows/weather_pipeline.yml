@@ -1,39 +1,40 @@
+       
 name: UK Weather Pipeline
- 
+
 on:
   schedule:
     - cron: "0 1 * * *"
   workflow_dispatch:
- 
+
 jobs:
   ingest:
     name: Fetch and Load Weather Data
     runs-on: ubuntu-latest
- 
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
- 
+
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: "pip"
- 
+
       - name: Install dependencies
         run: pip install -r requirements.txt
- 
+
       - name: Run ingestion script
         env:
-          SNOWFLAKE_ACCOUNT:    ${{ secrets.KSYWBQH-LI79821 }}
-          SNOWFLAKE_USER:       ${{ secrets.RAJMOHANREDDYBILLA }}
-          SNOWFLAKE_PASSWORD:   ${{ secrets.Sentinel@052026 }}
-          SNOWFLAKE_WAREHOUSE:  ${{ secrets.COMPUTE_WH }}
-          SNOWFLAKE_DATABASE:   ${{ secrets.WEATHER_DB }}
-          SNOWFLAKE_SCHEMA:     ${{ secrets.RAW }}
-          SNOWFLAKE_ROLE:       ${{ secrets.SYSADMIN }}
+          SNOWFLAKE_ACCOUNT: KSYWBQH-LI79821
+          SNOWFLAKE_USER: RAJMOHANREDDYBILLA
+          SNOWFLAKE_PASSWORD: Sentinel@052026
+          SNOWFLAKE_WAREHOUSE: COMPUTE_WH
+          SNOWFLAKE_DATABASE: WEATHER_DB
+          SNOWFLAKE_SCHEMA: RAW
+          SNOWFLAKE_ROLE: SYSADMIN
         run: python ingest_weather.py
- 
+
       - name: Notify on failure
         if: failure()
-        run: echo "Pipeline failed on run ${{ github.run_id }}"          
+        run: echo Pipeline failed        
