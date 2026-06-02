@@ -1,33 +1,28 @@
 name: UK Weather Pipeline
-
+ 
 on:
   schedule:
-    - cron: "0 0 * * *"   # Every day at 1am UTC
-  workflow_dispatch:        # Allows manual trigger from GitHub UI
-
+    - cron: "0 1 * * *"
+  workflow_dispatch:
+ 
 jobs:
   ingest:
-    name: Fetch & Load Weather Data
+    name: Fetch and Load Weather Data
     runs-on: ubuntu-latest
-
+ 
     steps:
-
-      # ── 1. Check out your repo ─────────────────────────────────────
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      # ── 2. Set up Python ───────────────────────────────────────────
+ 
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: "pip"
-
-      # ── 3. Install dependencies ────────────────────────────────────
+ 
       - name: Install dependencies
         run: pip install -r requirements.txt
-
-      # ── 4. Run the ingestion script ────────────────────────────────
+ 
       - name: Run ingestion script
         env:
           SNOWFLAKE_ACCOUNT:    ${{ secrets.KSYWBQH-LI79821 }}
@@ -38,11 +33,7 @@ jobs:
           SNOWFLAKE_SCHEMA:     ${{ secrets.RAW }}
           SNOWFLAKE_ROLE:       ${{ secrets.SYSADMIN }}
         run: python ingest_weather.py
-
-      # ── 5. Notify on failure (optional — remove if not needed) ─────
+ 
       - name: Notify on failure
         if: failure()
-        run: |
-          echo "Pipeline failed! Check the logs above."
-          echo "Run ID: ${{ github.run_id }}"
-          echo "Triggered at: ${{ github.event.head_commit.timestamp }}"
+        run: echo "Pipeline failed on run ${{ github.run_id }}"          
