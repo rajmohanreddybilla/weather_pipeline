@@ -1,0 +1,56 @@
+version: 2
+
+models:
+  - name: dim_city
+    description: "City dimension table with one row per UK city"
+    columns:
+      - name: city_key
+        description: "Surrogate key for the city"
+        tests:
+          - unique
+          - not_null
+      - name: city_name
+        description: "Name of the UK city"
+        tests:
+          - unique
+          - not_null
+      - name: region
+        description: "UK region the city belongs to"
+        tests:
+          - not_null
+      - name: country
+        description: "Country within the UK"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['England', 'Wales', 'Scotland']
+
+  - name: fct_weather
+    description: "Main weather fact table for Power BI — one row per city per day"
+    columns:
+      - name: weather_key
+        description: "Surrogate key (city + date)"
+        tests:
+          - unique
+          - not_null
+      - name: city_key
+        description: "Foreign key to dim_city"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_city')
+              field: city_key
+      - name: weather_date
+        description: "Date of the weather observation"
+        tests:
+          - not_null
+      - name: city_name
+        description: "Name of the UK city"
+        tests:
+          - not_null
+      - name: season
+        description: "Season derived from the month"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Winter', 'Spring', 'Summer', 'Autumn']

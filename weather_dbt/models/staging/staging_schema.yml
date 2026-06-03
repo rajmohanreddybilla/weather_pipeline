@@ -1,0 +1,53 @@
+version: 2
+
+sources:
+  - name: raw
+    database: WEATHER_DB
+    schema: RAW
+    tables:
+      - name: RAW_WEATHER
+        description: "Raw daily weather data loaded from Open-Meteo API"
+        freshness:
+          warn_after: {count: 2, period: day}
+          error_after: {count: 5, period: day}
+        loaded_at_field: _loaded_at
+        columns:
+          - name: city_name
+            description: "Name of the UK city"
+          - name: weather_date
+            description: "Date of the weather reading"
+          - name: temperature_max_c
+            description: "Maximum temperature in Celsius"
+          - name: precipitation_mm
+            description: "Total precipitation in millimetres"
+
+models:
+  - name: stg_weather
+    description: "Cleaned and enriched weather data from the raw source"
+    columns:
+      - name: city_name
+        description: "Name of the UK city"
+        tests:
+          - not_null
+      - name: weather_date
+        description: "Date of the weather observation"
+        tests:
+          - not_null
+      - name: weather_description
+        description: "Human readable weather description mapped from WMO code"
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - 'Clear sky'
+                - 'Mainly clear'
+                - 'Partly cloudy'
+                - 'Overcast'
+                - 'Foggy'
+                - 'Drizzle'
+                - 'Rain'
+                - 'Snow'
+                - 'Rain showers'
+                - 'Snow showers'
+                - 'Thunderstorm'
+                - 'Unknown'
