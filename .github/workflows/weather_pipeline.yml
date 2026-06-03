@@ -24,13 +24,13 @@ jobs:
 
       - name: Run ingestion script
         env:
-          SNOWFLAKE_ACCOUNT: ${{ secrets.KSYWBQH-LI79821 }}
-          SNOWFLAKE_USER: ${{ secrets.RAJMOHANREDDYBILLA }}
+          SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
           SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
-          SNOWFLAKE_WAREHOUSE: ${{ secrets.COMPUTE_WH }}
-          SNOWFLAKE_DATABASE: ${{ secrets.WEATHER_DB }}
-          SNOWFLAKE_SCHEMA: ${{ secrets.RAW }}
-          SNOWFLAKE_ROLE: ${{ secrets.SYSADMIN }}
+          SNOWFLAKE_WAREHOUSE: ${{ secrets.SNOWFLAKE_WAREHOUSE }}
+          SNOWFLAKE_DATABASE: ${{ secrets.SNOWFLAKE_DATABASE }}
+          SNOWFLAKE_SCHEMA: ${{ secrets.SNOWFLAKE_SCHEMA }}
+          SNOWFLAKE_ROLE: ${{ secrets.SNOWFLAKE_ROLE }}
         run: python data_ingestion/ingest_weather.py
 
       - name: Notify on failure
