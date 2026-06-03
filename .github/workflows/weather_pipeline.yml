@@ -26,7 +26,7 @@ jobs:
         env:
           SNOWFLAKE_ACCOUNT: ${{ secrets.KSYWBQH-LI79821 }}
           SNOWFLAKE_USER: ${{ secrets.RAJMOHANREDDYBILLA }}
-          SNOWFLAKE_PASSWORD: ${{ secrets.Sentinel@052026 }}
+          SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
           SNOWFLAKE_WAREHOUSE: ${{ secrets.COMPUTE_WH }}
           SNOWFLAKE_DATABASE: ${{ secrets.WEATHER_DB }}
           SNOWFLAKE_SCHEMA: ${{ secrets.RAW }}
